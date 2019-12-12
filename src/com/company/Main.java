@@ -1,9 +1,54 @@
 package com.company;
 
-public class Main {
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
+
+public class Main extends Application {
 
     public static void main(String[] args) {
+        launch(args);
         // write your code hereколво сравнений и временная сложность
+        long t = System.currentTimeMillis();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        stage.setTitle("JavaFX Chart (Series)");
+
+        NumberAxis x = new NumberAxis();
+        NumberAxis y = new NumberAxis();
+
+        LineChart<Number, Number> numberLineChart = new LineChart<Number, Number>(x,y);
+        numberLineChart.setTitle("Series");
+        XYChart.Series series1 = new XYChart.Series();
+        XYChart.Series series2 = new XYChart.Series();
+        series2.setName("cos(x)");
+        series1.setName("sin(x)");
+        ObservableList<XYChart.Data> datas = FXCollections.observableArrayList();
+        ObservableList<XYChart.Data> datas2 = FXCollections.observableArrayList();
+        for(int i=0; i<20; i++){
+            datas.add(new XYChart.Data(i,Math.sin(i)));
+            datas2.add(new XYChart.Data(i,Math.cos(i)));
+        }
+
+        series1.setData(datas);
+        series2.setData(datas2);
+
+        Scene scene = new Scene(numberLineChart, 600,600);
+        numberLineChart.getData().add(series1);
+        numberLineChart.getData().add(series2);
+        stage.setScene(scene);
+
+        stage.show();
     }
 
     public static int linearSearch(int arr[], int elementToSearch) {
@@ -42,22 +87,25 @@ public class Main {
         return -1;
     }
 
-    public int[] insertionSort(int[] data){
-            for
-    i in
+    public int[] insertionSort(int[] arr){
+        int n = arr.length;
+        for (int i = 1; i < n; ++i) {
+            int key = arr[i];
+            int j = i - 1;
 
-    range(len(data)):
-    j =i -1
-    key =data[i]
-            while data[j]>
-    key and
-    j >=0:
-    data[j +1]=data[j]
-    j -=1
-    data[j +1]=key
-	return data;}
+            /* Move elements of arr[0..i-1], that are
+               greater than key, to one position ahead
+               of their current position */
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
+            }
+            arr[j + 1] = key;
+        }
+        return arr;
+    }
 
-    public int[] insertion_binary(int[] data){
+        /*public int[] insertion_binary(int[] data){
             for
     i in
 
@@ -77,7 +125,7 @@ public class Main {
     data[j]=data[j -1]
     data[lo]=key
 	return data;
-}
+}*/
 public int[] bubbleSort(int[] mas) {
     boolean isSorted = false;
     int buf;
@@ -93,7 +141,9 @@ public int[] bubbleSort(int[] mas) {
             }
         }
     }
+    return mas;
 }
+
 
     public class ShellSort
     {
