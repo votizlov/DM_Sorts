@@ -8,7 +8,10 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Main extends Application {
 
@@ -67,9 +70,14 @@ public class Main extends Application {
 
         NumberAxis x = new NumberAxis();
         NumberAxis y = new NumberAxis();
-        int[] arr = new int[10000];
-        for (int i = 0; i < 1000; i++) {
-            arr[i] = i;
+        int[] sortedArr = new int[100];
+        int[] backwardsArr = new int[100];
+        int[] randomArr = new int[100];
+        Random r = new Random();
+        for (int i = 0; i < 100; i++) {
+            sortedArr[i] = i;
+            backwardsArr[99-i] = i;
+            randomArr[i] = r.nextInt();
         }
 
         LineChart<Number, Number> numberLineChart = new LineChart<Number, Number>(x, y);
@@ -92,41 +100,54 @@ public class Main extends Application {
         ObservableList<XYChart.Data> datas7 = FXCollections.observableArrayList();
         ObservableList<XYChart.Data> datas8 = FXCollections.observableArrayList();
         long t;
-        for (int i = 0; i < arr.length + 1; i++) {
-            linearSearch(arr, 11000);
+        for (int i = 0; i < sortedArr.length + 1; i++) {
+            linearSearch(sortedArr, 11000);
             datas.add(new XYChart.Data(i, c));
             c=0;
-            binarySearch(arr, 11000);
+            binarySearch(sortedArr, 11000);
             datas2.add(new XYChart.Data(i, c));
             c=0;
         }
-        for (int i = 2; i < 10000; i++) {
-            arr = new int[i];
-            for (int j = 0; j < i; j++) {
-                arr[j] = j;
-            }
-            bubbleSort(arr);
-            datas3.add(new XYChart.Data(i, c));
+        System.out.println("Bubble");
+            bubbleSort(sortedArr);
+        System.out.println(c);
+        c=0;
+        bubbleSort(backwardsArr);
+        System.out.println(c);
+            //datas3.add(new XYChart.Data(i, c));
             c=0;
-
+        System.out.println("Shell");
             ShellSort shellSort = new ShellSort();
-            shellSort.sort(arr);
-            datas4.add(new XYChart.Data(i, c));
+            shellSort.sort(sortedArr);
+        System.out.println(c);
+        c=0;
+        shellSort.sort(backwardsArr);
+        System.out.println(c);
+            //datas4.add(new XYChart.Data(i, c));
             c=0;
-
-            insertionSort(arr);
-            datas5.add(new XYChart.Data(i, c));
+        System.out.println("Insertion");
+            insertionSort(sortedArr);
+            //datas5.add(new XYChart.Data(i, c));
+            System.out.println(c);
             c=0;
-
-            insertionSort(arr);
-            datas6.add(new XYChart.Data(i, c));
+        System.out.println("Insertion binary");
+            insertionBinarySort(sortedArr);
+        System.out.println(c);
+        c=0;
+            //datas6.add(new XYChart.Data(i, c));
             c=0;
-            sortArray(arr);
-            datas7.add(new XYChart.Data(i, c));
+        System.out.println("Merge sort");
+            sortArray(sortedArr);//merge
+        System.out.println(c);
+        c=0;
+            //datas7.add(new XYChart.Data(i, c));
             c=0;
-            quickSort(arr, 0, 1);
-            datas8.add(new XYChart.Data(i, c));
-        }
+        System.out.println("Quicksort");
+            quickSort(sortedArr, 0, 1);
+        System.out.println(c);
+        c=0;
+            //datas8.add(new XYChart.Data(i, c));
+        /*
 
         series1.setData(datas);
         series2.setData(datas2);
@@ -149,7 +170,7 @@ public class Main extends Application {
         numberLineChart.getData().add(series8);
         stage.setScene(scene);
 
-        stage.show();
+        stage.show();*/
     }
 
     public static int linearSearch(int arr[], int elementToSearch) {
@@ -170,7 +191,7 @@ public class Main extends Application {
         while (firstIndex <= lastIndex) {c++;
             int middleIndex = (firstIndex + lastIndex) / 2;
             // если средний элемент - целевой элемент, вернуть его индекс
-            c+=3;
+            c++;
             if (arr[middleIndex] == elementToSearch) {
                 return middleIndex;
             }
@@ -178,12 +199,13 @@ public class Main extends Application {
             // если средний элемент меньше
             // направляем наш индекс в middle+1, убирая первую часть из рассмотрения
             else if (arr[middleIndex] < elementToSearch){
+                c++;
                 firstIndex = middleIndex + 1;}
                 // если средний элемент больше
                 // направляем наш индекс в middle-1, убирая вторую часть из рассмотрения
             else if (arr[middleIndex] > elementToSearch){
+                c++;
                 lastIndex = middleIndex - 1;}
-            c++;
         }
         return -1;
     }
@@ -206,27 +228,36 @@ public class Main extends Application {
         return arr;
     }
 
-    /*public int[] insertion_binary(int[] data){
-        for
-i in
+    private static void insertionBinarySort(int[] arr) {
+        int pos;
+        int key;
+        for (int i = 1; i < arr.length; i++) {
+            c++;
+            key = arr[i];
+            pos = binarySearch(0, i - 1, key, arr);
+            for (int j = i; j > pos; j--) {
+                c++;
+                arr[j] = arr[j - 1];
+            }
+            arr[pos] = key;
+        }
+    }
 
-range(len(data)):
-key =data[i]
-lo,hi =0,i -1
-        while lo<hi:
-mid =lo +(hi -lo) // 2
-        if key<data[mid]:
-hi =mid
-        else:
-lo =mid +1
-        for
-j in
+    private static int binarySearch(int low, int high, int key, int[] a) {
+        int mid;
+        while (low <= high) {
+            c+=3;
+            mid = (low + high) / 2;
+            if (key > a[mid])
+                low = mid + 1;
+            else if (key < a[mid])
+                high = mid - 1;
+            else
+                return mid;
+        }
+        return low;
+    }
 
-range(i, lo +1, -1):
-data[j]=data[j -1]
-data[lo]=key
-return data;
-}*/
     public int[] bubbleSort(int[] mas) {
         boolean isSorted = false;
         int buf;
@@ -312,6 +343,7 @@ c++;
     }
 
     public int[] sortArray(int[] arrayA) { // сортировка Массива который передается в функцию
+        //сортировка слиянием
         // проверяем не нулевой ли он?
         c++;
         if (arrayA == null) {
@@ -417,7 +449,6 @@ c++;
             t = findMin(nodes, adjacencyMatrix);
             if (!path.contains(nodes.get(t))) {
                 path.add(nodes.get(findMin(nodes, adjacencyMatrix)));
-                System.out.println("a");
             }
             removeNode(adjacencyMatrix, t);
         }
@@ -456,4 +487,26 @@ c++;
             }
         }
     }
+
+    /*public int[] insertion_binary(int[] data){
+        for
+i in
+
+range(len(data)):
+key =data[i]
+lo,hi =0,i -1
+        while lo<hi:
+mid =lo +(hi -lo) // 2
+        if key<data[mid]:
+hi =mid
+        else:
+lo =mid +1
+        for
+j in
+
+range(i, lo +1, -1):
+data[j]=data[j -1]
+data[lo]=key
+return data;
+}*/
 }
